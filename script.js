@@ -1,12 +1,5 @@
-/**
- * User clicks a button
- * Button brings up an input
- * User puts the input which creates a grid of that certain size
- * Input must be less than 100
- */
-
-
-// Grab Container Div
+/** Starting Phase */
+const START_VALUE = 16;
 const container = document.querySelector(".etch__container");
 
 function createBackground(size) {
@@ -25,4 +18,31 @@ function createBackground(size) {
     }
 }
 
-createBackground(10);
+createBackground(START_VALUE);
+
+/** Sketch Logic */
+container.addEventListener("mouseover", e => {
+    if (e.target.classList.contains("etch__cell")) {
+        e.target.style.backgroundColor = "black";
+    }
+});
+
+/** Restart Phase & Logic */
+const button = document.querySelector(".etch__button");
+
+button.addEventListener("click", () => {
+    container.replaceChildren();
+    createBackground(getSizeFromUser())
+})
+
+function getSizeFromUser() {
+    const input = prompt("Please enter a value from 1 to 100: ");
+    if (input == null) {
+        return START_VALUE;
+    }
+    const number = Math.floor(Number(input));
+    if (number < 1 || number > 100) {
+        return getSizeFromUser();
+    }
+    return number;
+}
